@@ -1,0 +1,18 @@
+{
+	"name": "IObject",
+	"version": "0.5.0",
+	"description": "Immutable Object",
+	"main": "IObject.js",
+	"scripts": {
+		"test": "tarsy test",
+		"build": "uglifyjs IObject.js -c -m -o IObject.min.js"
+	},
+	"license": "MIT",
+	"author": "Glenn Crownover <glenn@bluejava.com> (http://www.bluejava.com)",
+	"dependencies": {
+		"uglifyjs": "^2.4.10"
+	},
+	"devDependencies": {
+		"tarsy": "^0.5.1"
+	}
+}
