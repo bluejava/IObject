@@ -17,6 +17,25 @@
 
 	"use strict"
 
+	/* Create a prototype for all IObject objects. This will contain the set method for cloning the
+		object with a change. We define the set method as a non-enumerable property value on the
+		prototype so that it doesn't appear when enumerating over the object */
+	var IOProto = { }
+	Object.defineProperty(IOProto, "set", {
+		value: function(prop, val) {
+				return set(this, prop, val)
+			},
+		enumerable: false })
+
+	// Create a new IObject from the prototype and all the properties from the fromObject (if present)
+	function createIObject(fromObject)
+	{
+		return Object.assign(
+				Object.create(IOProto),
+				fromObject
+			)
+	}
+
 	/*
 		set: <Object> ob -> <String> prop -> <ANY> val -> <IObject> result
 
@@ -40,17 +59,16 @@
 			var tlProp = prop.substring(0, dotIndex),	// extract the top level property name
 				subProp = prop.substring(dotIndex + 1)	// ... and the sub property path
 
-			// if the child object has its own set, use it (works with IObject, IArray, etc)
-			if(ob[tlProp].set)
-				val = ob[tlProp].set(subProp, val)
-			else
-				// else use our set, which converts objects to IObjects
-				val = set(ob[tlProp], subProp, val)
+			val = set(ob[tlProp], subProp, val)
 
 			// now override the property name with the top-level property name as
 			// we have obtained a changed child value via recursion
 			prop = tlProp
 		}
+
+		// If the object has its own set (and its not us), use that instead (supports IArray)
+		if(ob.set && ob.set !== IOProto.set)
+			return ob.set(prop, val)
 
 		var o2 = createIObject(ob)	// shallow copy this immutable object
 		o2[prop] = val				// set the value directly (before freezing)
@@ -79,25 +97,6 @@
 		}
 
 		return o
-	}
-
-	/* Create a prototype for all IObject objects. This will contain the set method for cloning the
-		object with a change. We define the set method as a non-enumerable property value on the
-		prototype so that it doesn't appear when enumerating over the object */
-	var IOProto = { }
-	Object.defineProperty(IOProto, "set", {
-		value: function(prop, val) {
-				return set(this, prop, val)
-			},
-		enumerable: false })
-
-	// Create a new IObject from the prototype and all the properties from the fromObject (if present)
-	function createIObject(fromObject)
-	{
-		return Object.assign(
-				Object.create(IOProto),
-				fromObject
-			)
 	}
 
 	// Our factory method takes an optional fromOb, creates a new IObject, deep freezes it and returns it.
