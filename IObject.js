@@ -34,20 +34,28 @@
 	*/
 	function set(ob, prop, val)
 	{
-		var o2 = createIObject(ob),
-			co = o2,
-			parts = prop.split(".")
-
-		while(parts.length > 1)
+		var dotIndex = prop.indexOf(".")
+		if(dotIndex >= 0) // is this a non-top-level property?
 		{
-			var nextPart = parts.shift()
-			co[nextPart] = Object.assign({}, co[nextPart])
-			co = co[nextPart]
+			var tlProp = prop.substring(0, dotIndex),	// extract the top level property name
+				subProp = prop.substring(dotIndex + 1)	// ... and the sub property path
+
+			// if the child object has its own set, use it (works with IObject, IArray, etc)
+			if(ob[tlProp].set)
+				val = ob[tlProp].set(subProp, val)
+			else
+				// else use our set, which converts objects to IObjects
+				val = set(ob[tlProp], subProp, val)
+
+			// now override the property name with the top-level property name as
+			// we have obtained a changed child value via recursion
+			prop = tlProp
 		}
 
-		co[parts[0]] = val
+		var o2 = createIObject(ob)	// shallow copy this immutable object
+		o2[prop] = val				// set the value directly (before freezing)
 
-		return deepFreeze(o2)
+		return deepFreeze(o2)		// freeze and return ;-)
 	}
 
 	/*

@@ -26,8 +26,10 @@
 
 					var o = IObject({a: 1, b: 2, c: 3, d: { a: { b: { c: 10 }}}})
 					var o2 = o.set("a", 5).set("d.a.b.c", 50)
+					var o3 = o2.set("a", 17).set("d.a.b.c", 22)
 					assert.deepEqual(o, {a: 1, b: 2, c: 3, d: { a: { b: { c: 10 }}}}) // unchanged
 					assert.deepEqual(o2, {a: 5, b: 2, c: 3, d: { a: { b: { c: 50 }}}}) // has changes
+					assert.deepEqual(o3, {a: 17, b: 2, c: 3, d: { a: { b: { c: 22 }}}}) // again...
 			})
 		}
 

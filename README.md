@@ -81,6 +81,28 @@ user = user.set("address.city", "Fujisawa")
 log(user.address.city)	// Fujisawa
 ```
 
+#### Note:
+
+Child objects within `IObject` are "shallow cloned" when their properties are changed, retaining the immutable nature of `IObject`. When this occurs, child objects are converted to `IObject` themselves. This is generally desired behavior, but be aware of it. Objects that are not changed are not converted.
+
+One place this may bite you is in an `Array`. Standard JavaScript `Array` objects are mutable - if you place one into an `IObject` and then attempt to change it via `set`, the array will be converted into an `IObject` which is probably not intended:
+
+```javascript
+var user = IObject({name: "Glenn", favs: [ 2, 7, 26 ]})
+log(user.favs.join(","))  // "2,7,26" as expected
+user = user.set("favs.1", 5)
+log(user.favs.join(","))  // TypeError: user.favs.join is not a function
+```
+
+If you wish to use an array as part of an immutable data structure, use the [IArray](https://github.com/bluejava/IArray) - which is immutable, and can be used within an `IObject` as expected:
+
+```javascript
+var user = IObject({name: "Glenn", favs: IArray([ 2, 7, 26 ])})
+log(user.favs.join(","))  // "2,7,26" as expected
+user = user.set("favs.1", 5)
+log(user.favs.join(","))  // "2,5,26"
+```
+
 ### License
 
 See the LICENSE file for license rights and limitations (MIT).
