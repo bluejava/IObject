@@ -1,6 +1,6 @@
 {
 	"name": "IObject",
-	"version": "0.6.1",
+	"version": "0.6.2",
 	"description": "Immutable Object",
 	"main": "IObject.js",
 	"scripts": {

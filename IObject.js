@@ -5,14 +5,14 @@
     If none of those is detected, it defines IObject on the global context.
 */
 (function(global, factory) {
-    if(typeof define === "function" && define.amd)
-        define(factory)
+	if(typeof define === "function" && define.amd)
+		define(factory)
+	else if (typeof module === "object" && module.exports)
+		module.exports = factory()
 	else if(typeof eki === "object" && eki.def)
 		eki.def("IObject", factory)
-    else if(typeof exports === "object")
-        module.exports = factory()
-    else
-        global.IObject = factory()
+	else
+		global.IObject = factory()
 	}(this, function() {
 
 	"use strict"
