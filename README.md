@@ -18,16 +18,16 @@ Some libraries exist that provide immutable objects, such as [Mori](http://swann
 
 ```bash
 wc -l IObject.js
-103 IObject.js
+110 IObject.js
 ```
 
-103 lines in the *source* file, much of which is comments and the universal module definition. `IObject.min.js` is currently just **765** bytes.
+103 lines in the *source* file, much of which is comments and the universal module definition. `IObject.min.js` is currently just **817** bytes.
 
 ## How
 
 `IObject ` extends `Object` and adds the non-enumerable `set` function for setting values (top level and _deep_ values). Because of this approach, `IObject` appears and behaves just like an object literal with the exception of how you set values.
 
-Note: By default the object does not block standard setting of values. You may set `IObject.freeze` to either `SHALLOW` or `DEEP` to block standard setting of values. 'SHALLOW' only blocks top-level setting of values, whereas `DEEP` freezes all objects at all levels within the `IObject`. It is recommended that you set `IObject.freeze` to `DEEP` during development to ensure you are not inadvertently setting object values directly. 
+Note: By default the object does not block standard setting of values. You may set `IObject.freeze` to either `SHALLOW` or `DEEP` to block standard setting of values. 'SHALLOW' only blocks top-level setting of values, whereas `DEEP` freezes all objects at all levels within the `IObject`. It is recommended that you set `IObject.freeze` to `DEEP` during development to ensure you are not inadvertently setting object values directly.
 
 ## API
 
@@ -71,7 +71,7 @@ Now lets looks at *deep* properties - i.e. properties not at the top level of th
 var user = IObject({ id: 123, name: "glenn" }) // two top-level properties
 user = user.set("address",  // setting object property for "address"
 	{ street: "123 Main St.", city: "Yokohama", country: "Japan" })
-	
+
 // We access deep properties just as we would in a standard object
 log(user.address.country)	// Japan
 

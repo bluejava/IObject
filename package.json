@@ -1,6 +1,6 @@
 {
 	"name": "IObject",
-	"version": "0.6.2",
+	"version": "0.7.2",
 	"description": "Immutable Object",
 	"main": "IObject.js",
 	"scripts": {
@@ -9,10 +9,9 @@
 	},
 	"license": "MIT",
 	"author": "Glenn Crownover <glenn@bluejava.com> (http://www.bluejava.com)",
-	"dependencies": {
-		"uglifyjs": "^2.4.10"
-	},
+	"dependencies": {},
 	"devDependencies": {
-		"tarsy": "^0.5.1"
+		"tarsy": "^0.5.1",
+		"uglify-js": "^3.17.4"
 	}
 }
